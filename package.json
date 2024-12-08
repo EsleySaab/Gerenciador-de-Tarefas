@@ -9,6 +9,7 @@
   "author": "Esley Santana",
   "license": "ISC",
   "dependencies": {
+    "@prisma/client": "^5.19.1",
     "dotenv": "^16.4.7",
     "express": "^4.19.2",
     "express-async-errors": "^3.1.1",
