@@ -105,8 +105,8 @@ model TaskHistory {
 
   changedBy String @map("changed_by")
 
-  oldStatus String @map("old_status")
-  newStatus String @map("new_status")
+  oldStatus TaskStatus @map("old_status")
+  newStatus TaskStatus @map("new_status")
 
   changedAt DateTime? @updatedAt @map("changed_at")
 
