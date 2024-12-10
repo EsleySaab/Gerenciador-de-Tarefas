@@ -9,5 +9,7 @@ const tasksController = new TasksController()
 tasksRoutes.use(ensureAuthenticated, verifyUserAuthorization(["admin"]))
 
 tasksRoutes.post("/", tasksController.create)
+tasksRoutes.get("/", tasksController.index)
+tasksRoutes.patch("/:id", tasksController.update)
 
 export { tasksRoutes }
