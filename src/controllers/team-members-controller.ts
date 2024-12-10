@@ -12,6 +12,16 @@ class TeamMembersController {
 
     const { user_id, team_id } = bodySchema.parse(request.body)
 
+    const existingMembership = await prisma.teamMembers.findFirst({
+      where: {
+        userId: user_id,
+      },
+    })
+
+    if (existingMembership) {
+      throw new AppError("This user is already in a team")
+    }
+
     const addMember = await prisma.teamMembers.create({
       data: {
         userId: user_id,
@@ -32,11 +42,26 @@ class TeamMembersController {
       },
     })
 
-    if (user_id) {
-      throw new AppError("This user is already in a team")
-    }
-
     return response.json({ addMember })
+  }
+
+  async index(request: Request, response: Response) {
+    const members = await prisma.teamMembers.findMany({
+      include: {
+        user: {
+          select: {
+            name: true,
+          },
+        },
+        team: {
+          select: {
+            name: true,
+          },
+        },
+      },
+    })
+
+    return response.json(members)
   }
 }
 
