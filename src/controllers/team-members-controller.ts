@@ -22,6 +22,16 @@ class TeamMembersController {
       throw new AppError("This user is already in a team")
     }
 
+    const existUser = await prisma.user.findFirst({
+      where: {
+        id: user_id,
+      },
+    })
+
+    if (!existUser) {
+      throw new AppError("this user does not exist")
+    }
+
     const addMember = await prisma.teamMembers.create({
       data: {
         userId: user_id,
@@ -62,6 +72,28 @@ class TeamMembersController {
     })
 
     return response.json(members)
+  }
+
+  async remove(request: Request, response: Response) {
+    const { id } = request.params
+
+    const existingMember = await prisma.teamMembers.findUnique({
+      where: {
+        id,
+      },
+    })
+
+    if (!existingMember) {
+      throw new AppError("user not found", 404)
+    }
+
+    const deletedMember = await prisma.teamMembers.delete({
+      where: {
+        id,
+      },
+    })
+
+    return response.json("user removed from team")
   }
 }
 
