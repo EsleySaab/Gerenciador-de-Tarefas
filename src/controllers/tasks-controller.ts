@@ -104,6 +104,28 @@ class TasksController {
 
     return response.json("task updated successfully")
   }
+
+  async remove(request: Request, response: Response) {
+    const paramsSchema = z.object({
+      id: z.string().uuid(),
+    })
+
+    const { id } = paramsSchema.parse(request.params)
+
+    const existingTask = await prisma.tasks.findUnique({
+      where: { id },
+    })
+
+    if (!existingTask) {
+      throw new AppError("Task not found", 404)
+    }
+
+    await prisma.tasks.delete({
+      where: { id },
+    })
+
+    return response.json({ message: "Task removed sucessfully" })
+  }
 }
 
 export { TasksController }

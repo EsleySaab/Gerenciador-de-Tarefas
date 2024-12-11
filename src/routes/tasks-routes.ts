@@ -11,5 +11,6 @@ tasksRoutes.use(ensureAuthenticated, verifyUserAuthorization(["admin"]))
 tasksRoutes.post("/", tasksController.create)
 tasksRoutes.get("/", tasksController.index)
 tasksRoutes.patch("/:id", tasksController.update)
+tasksRoutes.delete("/:id", tasksController.remove)
 
 export { tasksRoutes }
